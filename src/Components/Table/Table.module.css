@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+    max-width: 80vw;
+    margin: auto;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+}
+
+.threadButton {
+    cursor: pointer;
+    user-select: none;
+}
+
+.orderDirection {
+    font-size: 7px;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+.threadButton:hover .orderDirection {
+    opacity: 1;
+}
