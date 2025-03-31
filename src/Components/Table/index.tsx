@@ -1,14 +1,8 @@
 import TableRow from '../TableRow';
 import { Coin } from '../../types/Coin.ts';
-import Styles from './Table.module.css';
 
-import {
-  TableUI,
-  TableBodyUI,
-  TableHeadUI,
-  TableRowUI,
-  TableHeaderUI,
-} from "@/Components/ui/table"
+import { TableUI, TableBodyUI, TableHeadUI, TableRowUI, TableHeaderUI, TableCellUI } from '@/Components/ui/table';
+import { Skeleton } from '@/Components/ui/skeleton.tsx';
 
 type TableProps = {
   coins: Coin[];
@@ -26,9 +20,9 @@ const Table = ({ coins, sortOrder, handleSortOrderChange, isLoading }: TableProp
     'market_cap_rank',
     'name',
     'current_price',
-    "price_change_percentage_1h_in_currency",
-    "price_change_percentage_24h_in_currency",
-    "price_change_percentage_7d_in_currency",
+    'price_change_percentage_1h_in_currency',
+    'price_change_percentage_24h_in_currency',
+    'price_change_percentage_7d_in_currency',
     'market_cap',
   ];
 
@@ -42,31 +36,50 @@ const Table = ({ coins, sortOrder, handleSortOrderChange, isLoading }: TableProp
     market_cap: 'Рыночная капитализация',
   };
 
-  return (
-      <TableUI className={Styles.table}>
+  if (isLoading) {
+    return (
+      <TableUI>
+        <TableHeaderUI>
+          <TableRowUI>
+            <TableCellUI colSpan={allowedKeys.length}>
+              <Skeleton className="h-4 w-full" />
+            </TableCellUI>
+          </TableRowUI>
+        </TableHeaderUI>
+
+        <TableBodyUI>
+          {coins.map((coin, index) => (
+            <TableRow key={index} coin={coin} allowedKeys={allowedKeys} isLoading={true} />
+          ))}
+        </TableBodyUI>
+      </TableUI>
+    );
+  } else {
+    return (
+      <TableUI>
         <TableHeaderUI>
           <TableRowUI>
             {allowedKeys.map((ObjKey) => (
-                <TableHeadUI className="w-52" key={ObjKey}>
-                  <p className={Styles.threadButton} onClick={() => handleSortOrderChange(ObjKey)}>
-                    {columnNames[ObjKey]} <span className={Styles.orderDirection}>{sortOrder.order_symbol}</span>
-                  </p>
-                </TableHeadUI>
+              <TableHeadUI key={ObjKey}>
+                <p className="cursor-pointer select-none group" onClick={() => handleSortOrderChange(ObjKey)}>
+                  {columnNames[ObjKey]}{' '}
+                  <span className="text-[7px] opacity-0 transition-opacity duration-100 ease-in group-hover:opacity-100">
+                    {sortOrder.order_symbol}
+                  </span>
+                </p>
+              </TableHeadUI>
             ))}
           </TableRowUI>
         </TableHeaderUI>
 
         <TableBodyUI>
           {coins.map((coin, index) => (
-              <TableRow key={index} coin={coin} allowedKeys={allowedKeys} isLoading={isLoading} />
+            <TableRow key={index} coin={coin} allowedKeys={allowedKeys} isLoading={false} />
           ))}
-          {/*{Array.from({length: 50 - coins.length}, (_, i) => (*/}
-          {/*    <TableRowUI key={i}> kal </TableRowUI>*/}
-          {/*))}*/}
-
         </TableBodyUI>
       </TableUI>
-  );
+    );
+  }
 };
 
 export default Table;

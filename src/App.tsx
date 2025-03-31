@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import Table from './Components/Table';
 import TablePagination from './Components/TablePagination';
 import { Coin } from './types/Coin';
 import { fetchCoins } from './api/fetchCoins';
 import { sortCoins } from './utils/sortCoins';
-import './App.css';
+import Header from './Components/Header';
 
 type SortOrder = {
   key: keyof Coin;
@@ -31,15 +31,23 @@ function App() {
   };
 
   const handleCurrentPageChange = (page: number) => {
+
+    if (page < 1) {
+      page = 1;
+    }
+    if (page > 344) {
+      page = 344;
+    }
+
     setCurrentPage(page);
   }
 
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       try {
         const data = await fetchCoins(currentPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setCoins(data);
       } catch (error) {
         console.error(error);
@@ -50,12 +58,14 @@ function App() {
     };
 
     loadData();
-  }, [sortOrder, currentPage]);
+  }, [currentPage]);
 
   const sortedCoins = coins ? sortCoins(coins, sortOrder) : [];
 
   return (
-      <div className="container">
+      <div className="flex flex-col items-center justify-center mx-auto max-w-[80vw] p-15">
+        <Header />
+
         {coins ? (
             <Table
                 coins={sortedCoins}
@@ -69,7 +79,7 @@ function App() {
 
         <TablePagination
             currentPage={currentPage}
-            handleCurrentPageChange={setCurrentPage}
+            handleCurrentPageChange={handleCurrentPageChange}
             pageCount={344}
         />
       </div>

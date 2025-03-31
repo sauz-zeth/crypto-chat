@@ -1,5 +1,4 @@
 import { Coin } from '../../types/Coin.ts';
-import Styles from './TableRow.module.css';
 import {
   TableRowUI,
   TableCellUI,
@@ -38,7 +37,7 @@ export default function TableRow({ coin, allowedKeys, isLoading = false }: CoinC
             return (
                 <TableCellUI key={index}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img className={Styles.coinImg} src={coin.image} alt={coin[key]} />
+                    <img className="mr-2 align-middle w-5 h-5" src={coin.image} alt={coin[key]} />
                     {coin[key]}
                   </div>
                 </TableCellUI>
