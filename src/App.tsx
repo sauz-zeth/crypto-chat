@@ -63,7 +63,7 @@ function App() {
   const sortedCoins = coins ? sortCoins(coins, sortOrder) : [];
 
   return (
-      <div className="flex flex-col items-center justify-center mx-auto max-w-[80vw] p-15">
+      <div className="flex flex-col items-center justify-center mx-auto max-w-[90vw] py-15">
         <Header />
 
         {coins ? (
